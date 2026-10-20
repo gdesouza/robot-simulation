@@ -1,0 +1,175 @@
+#VRML_SIM R2025a utf8
+EXTERNPROTO "../protos/IndoorBot.proto"
+WorldInfo {
+  basicTimeStep 10
+  coordinateSystem "ENU"
+  contactProperties [
+    ContactProperties { material1 "tire" material2 "floor" coulombFriction [ 1.0 ] }
+    ContactProperties { material1 "caster" material2 "floor" coulombFriction [ 0.02 ] }
+  ]
+}
+# Overview: local +X viewing axis rotated down toward the room center.
+Viewpoint { orientation 0 1 0 1.5707963267948966 position 0 0 15 fieldOfView 0.9 }
+Background { skyColor [ 0.65 0.75 0.85 ] }
+DirectionalLight { direction -0.4 0.2 -1 intensity 1 }
+Solid {
+  translation 0 0 -0.10
+  name "floor"
+  contactMaterial "floor"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.68 0.67 0.62 roughness 0.85 metalness 0 }
+    geometry DEF G_floor Box { size 8.4 6.4 0.2 }
+  } ]
+  boundingObject USE G_floor
+}
+Solid {
+  translation 0 3.1 1.2
+  name "north"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_north Box { size 8.4 0.2 2.4 }
+  } ]
+  boundingObject USE G_north
+}
+Solid {
+  translation 0 -3.1 1.2
+  name "south"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_south Box { size 8.4 0.2 2.4 }
+  } ]
+  boundingObject USE G_south
+}
+Solid {
+  translation 4.1 0 1.2
+  name "east"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_east Box { size 0.2 6 2.4 }
+  } ]
+  boundingObject USE G_east
+}
+Solid {
+  translation -4.1 0 1.2
+  name "west"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_west Box { size 0.2 6 2.4 }
+  } ]
+  boundingObject USE G_west
+}
+Solid {
+  translation 0 -2.1 1.2
+  name "partition_s"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_partition_s Box { size 0.16 1.8 2.4 }
+  } ]
+  boundingObject USE G_partition_s
+}
+Solid {
+  translation 0 0 1.2
+  name "partition_mid"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_partition_mid Box { size 0.16 0.8 2.4 }
+  } ]
+  boundingObject USE G_partition_mid
+}
+Solid {
+  translation 0 2.1 1.2
+  name "partition_n"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_partition_n Box { size 0.16 1.8 2.4 }
+  } ]
+  boundingObject USE G_partition_n
+}
+Solid {
+  translation 0 -0.8 2.25
+  name "lintel_s"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_lintel_s Box { size 0.16 0.8 0.3 }
+  } ]
+  boundingObject USE G_lintel_s
+}
+Solid {
+  translation 0 0.8 2.25
+  name "lintel_n"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.83 0.85 0.88 roughness 0.85 metalness 0 }
+    geometry DEF G_lintel_n Box { size 0.16 0.8 0.3 }
+  } ]
+  boundingObject USE G_lintel_n
+}
+Solid {
+  translation -2 1.7 0.375
+  name "desk"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.55 0.32 0.15 roughness 0.85 metalness 0 }
+    geometry DEF G_desk Box { size 1.4 0.7 0.75 }
+  } ]
+  boundingObject USE G_desk
+}
+Solid {
+  translation -3.55 0 0.65
+  name "cabinet"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.35 0.42 0.5 roughness 0.85 metalness 0 }
+    geometry DEF G_cabinet Box { size 0.65 1.2 1.3 }
+  } ]
+  boundingObject USE G_cabinet
+}
+Solid {
+  translation 2 2.1 0.4
+  name "sofa"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.25 0.45 0.3 roughness 0.85 metalness 0 }
+    geometry DEF G_sofa Box { size 2 0.8 0.8 }
+  } ]
+  boundingObject USE G_sofa
+}
+Solid {
+  translation 2 0 0.35
+  name "table"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.6 0.4 0.2 roughness 0.85 metalness 0 }
+    geometry DEF G_table Box { size 0.9 0.9 0.7 }
+  } ]
+  boundingObject USE G_table
+}
+Solid {
+  translation 3.6 -1.9 0.75
+  name "shelf"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.45 0.3 0.2 roughness 0.85 metalness 0 }
+    geometry DEF G_shelf Box { size 0.6 1.4 1.5 }
+  } ]
+  boundingObject USE G_shelf
+}
+Solid {
+  translation -1.6 -1.9 0.25
+  name "chair"
+  contactMaterial "default"
+  children [ Shape {
+    appearance PBRAppearance { baseColor 0.65 0.25 0.2 roughness 0.85 metalness 0 }
+    geometry DEF G_chair Box { size 0.5 0.5 0.5 }
+  } ]
+  boundingObject USE G_chair
+}
+IndoorBot { }

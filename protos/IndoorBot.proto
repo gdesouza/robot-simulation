@@ -1,0 +1,97 @@
+#VRML_SIM R2025a utf8
+# template language: javascript
+# Small configurable differential drive, all geometry in meters.
+PROTO IndoorBot [
+  field SFVec3f translation -3 -2 0
+  field SFRotation rotation 0 0 1 0
+  field SFFloat wheelRadius 0.065
+  field SFFloat wheelWidth 0.035
+  field SFFloat axleTrack 0.30
+  field SFFloat maxWheelSpeed 8
+  field SFInt32 cameraWidth 640
+  field SFInt32 cameraHeight 480
+  field SFInt32 lidarSamples 360
+  field SFFloat lidarMaxRange 10
+] {
+%< const r=fields.wheelRadius.value, w=fields.wheelWidth.value, t=fields.axleTrack.value; >%
+Robot {
+  translation IS translation
+  rotation IS rotation
+  name "IndoorBot"
+  controller "indoor_driver"
+  window "<generic>"
+  customData %<= JSON.stringify(JSON.stringify({wheel_radius:r, axle_track:t, max_wheel_speed:fields.maxWheelSpeed.value})) >%
+  children [
+    Pose {
+      translation -0.025 0 %<= r+0.055 >%
+      children [ Shape {
+        appearance PBRAppearance { baseColor 0.12 0.45 0.65 roughness 0.65 metalness 0 }
+        geometry Box { size 0.32 0.24 0.10 }
+      } ]
+    }
+%< for (const side of [1,-1]) { >%
+    HingeJoint {
+      jointParameters HingeJointParameters { axis 0 1 0 anchor 0 %<= side*t/2 >% %<= r >% }
+      device [ RotationalMotor {
+        name %<= JSON.stringify(side===1?'left wheel motor':'right wheel motor') >%
+        maxVelocity IS maxWheelSpeed
+        maxTorque 2
+      } ]
+      endPoint Solid {
+        translation 0 %<= side*t/2 >% %<= r >%
+        rotation 1 0 0 1.57079632679
+        name %<= JSON.stringify(side===1?'left wheel':'right wheel') >%
+        contactMaterial "tire"
+        children [ Shape {
+          appearance PBRAppearance { baseColor 0.035 0.035 0.035 roughness 1 metalness 0 }
+          geometry DEF %<= side===1?'WHEELL':'WHEELR' >% Cylinder { radius IS wheelRadius height IS wheelWidth }
+        } ]
+        boundingObject USE %<= side===1?'WHEELL':'WHEELR' >%
+        physics Physics { density -1 mass 0.15 }
+      }
+    }
+%< } >%
+    BallJoint {
+      jointParameters BallJointParameters { anchor -0.13 0 0.025 }
+      endPoint Solid {
+        translation -0.13 0 0.025
+        name "passive ball caster"
+        contactMaterial "caster"
+        children [ Shape {
+          appearance PBRAppearance { baseColor 0.55 0.55 0.55 roughness 0.3 metalness 0.5 }
+          geometry DEF CASTER Sphere { radius 0.025 }
+        } ]
+        boundingObject USE CASTER
+        physics Physics { density -1 mass 0.05 }
+      }
+    }
+    Camera {
+      translation 0.165 0 %<= r+0.10 >%
+      name "front camera"
+      width IS cameraWidth
+      height IS cameraHeight
+      fieldOfView 1.0471975512
+      near 0.02
+      far 20
+    }
+    Lidar {
+      translation 0 0 %<= r+0.20 >%
+      name "lidar"
+      horizontalResolution IS lidarSamples
+      fieldOfView 6.283185307179586
+      verticalFieldOfView 0.04
+      numberOfLayers 1
+      near 0.02
+      minRange 0.05
+      maxRange IS lidarMaxRange
+      type "fixed"
+      projection "cylindrical"
+    }
+  ]
+  boundingObject Pose {
+    translation -0.025 0 %<= r+0.055 >%
+    children [ Box { size 0.32 0.24 0.10 } ]
+  }
+  physics Physics { density -1 mass 3 }
+}
+}
